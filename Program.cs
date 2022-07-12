@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ttt_mono
+namespace TTT
 {
     public static class Program
     {

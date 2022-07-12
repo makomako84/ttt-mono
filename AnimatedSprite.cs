@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace ttt_mono
+namespace TTT
 {
     public class AnimatedSprite
     {

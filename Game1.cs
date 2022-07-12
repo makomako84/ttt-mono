@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ttt_mono
+namespace TTT
 {
     public class Game1 : Game
     {
