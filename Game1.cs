@@ -19,6 +19,9 @@ namespace ttt_mono
         private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 10), new Vector3(0, 0, 0), Vector3.UnitY);
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 100f);
 
+        private Vector3 position;
+        private float angle;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -29,6 +32,9 @@ namespace ttt_mono
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            position = Vector3.Zero;
+            angle = 0;
 
             base.Initialize();
         }
@@ -56,6 +62,10 @@ namespace ttt_mono
 
             // TODO: Add your update logic here
             _animatedSprite.Update();
+            position += new Vector3(0, 0.01f, 0);
+            angle += 0.03f;
+            world = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
+            
 
             base.Update(gameTime);
         }
