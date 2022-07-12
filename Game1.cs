@@ -21,6 +21,7 @@ namespace ttt_mono
 
         private Vector3 position;
         private float angle;
+        private KeyboardState oldState;
 
         public Game1()
         {
@@ -65,7 +66,13 @@ namespace ttt_mono
             position += new Vector3(0, 0.01f, 0);
             angle += 0.03f;
             world = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
-            
+
+            KeyboardState newState = Keyboard.GetState();
+            if(oldState.IsKeyUp(Keys.Left) && newState.IsKeyDown(Keys.Left))
+            {
+                System.Diagnostics.Debug.WriteLine("FIRE!");
+            }
+            oldState = newState;
 
             base.Update(gameTime);
         }
