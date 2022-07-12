@@ -4,7 +4,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class Game1 : Game
+    /// <summary>
+    /// Tic-tac-toe
+    /// </summary>
+    public class TTT : Game
     {
         private Texture2D _xTexture;
         private Texture2D _oTexture;
@@ -23,7 +26,7 @@ namespace TTT
         private float angle;
         private KeyboardState oldState;
 
-        public Game1()
+        public TTT()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
