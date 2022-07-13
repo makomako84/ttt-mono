@@ -16,6 +16,8 @@ namespace TTT
         public Texture2D _texture;
         public Vector2 _position;
 
+        public Cell Selection { get; private set; }
+
         public Selector(
             Configuration configuration,
             Board board)
@@ -44,6 +46,7 @@ namespace TTT
                 if(value >=0 && value < 3)
                 {
                     _selectionX = value;
+                    OnSelectionChanged();
                 }
             }
         }
@@ -56,8 +59,21 @@ namespace TTT
                 if(value >= 0 && value <3)
                 {
                     _selectionY = value;
+                    OnSelectionChanged();
                 }
             }
+        }
+
+        private void OnSelectionChanged()
+        {
+            Selection = _board.Cells[SelectionX, SelectionY];
+
+            _position = new Vector2(
+                _board.leftCornerPosition.X + SelectionX * _conf.CellSize,
+                _board.leftCornerPosition.Y + SelectionY * _conf.CellSize
+            );
+
+            // System.Diagnostics.Debug.WriteLine($"OnSelectionChanged > Selection position: {Selection.Position}");
         }
 
         public void Update(KeyboardState newState, KeyboardState oldState)
@@ -78,11 +94,6 @@ namespace TTT
             {
                 SelectionY++;
             }
-
-                _position = new Vector2(
-                    _board.leftCornerPosition.X + SelectionX * _conf.CellSize,
-                    _board.leftCornerPosition.Y + SelectionY * _conf.CellSize
-            );
         }
 
         public void Draw(SpriteBatch batch)
