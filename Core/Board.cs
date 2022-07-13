@@ -23,7 +23,7 @@ namespace TTT
         public void Initialize()
         {
             leftCornerPosition = _config.BoardLeftCornerPosition;
-            
+
             Cells = new Cell[3,3];
             for(int i=0; i < Cells.GetLength(0); i++)
             {
@@ -36,6 +36,11 @@ namespace TTT
                         leftCornerPosition.Y + _config.CellSize * j);
                 }
             }
+        }
+
+        public void ApplyMove(int x, int y, Player player)
+        {
+            Cells[x, y].CapturedBy = player;
         }
 
         public void Draw(SpriteBatch spriteBatch)

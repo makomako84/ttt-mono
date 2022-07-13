@@ -8,8 +8,27 @@ namespace TTT
 {
     public class GameManager
     {
+        private int _currentPlayerId;
+
         public Dictionary<int, Player> Identities = new Dictionary<int, Player>();
 
+        public int CurrentPlayerId
+        {
+            get => _currentPlayerId;
+            set
+            {
+                if(value > 0 && value < Identities.Count)
+                {
+                    _currentPlayerId = value;
+                    OnPlayerIdChanged();
+                }
+            }
+        }
+
+        public Player CurrentPlayer
+        {
+            get => Identities[_currentPlayerId];
+        }
 
 
         public GameManager()
@@ -21,7 +40,28 @@ namespace TTT
         {
             Identities.Add(0, new Player(0));
             Identities.Add(1, new Player(1));
-            Identities.Add(2, new Player(2));            
+            Identities.Add(2, new Player(2));          
+
+            CurrentPlayerId = 1;  
+        }   
+
+        public void NextPlayerId()     
+        {
+            int next = _currentPlayerId + 1;
+            if(next >= Identities.Count)
+            {
+                next = 1;
+                CurrentPlayerId = next;
+            }
+            else
+            {
+                CurrentPlayerId++;
+            }
+        }
+
+        private void OnPlayerIdChanged()
+        {
+            System.Diagnostics.Debug.WriteLine($"OnPlayerIdChanged > id: {_currentPlayerId}");
         }
 
 

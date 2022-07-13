@@ -15,8 +15,7 @@ namespace TTT
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var texture = CapturedBy.Sign;
-            spriteBatch.Draw(texture, Position, Color.White);
+            spriteBatch.Draw(CapturedBy.Sign, Position, Color.White);
         }
     }
 }
