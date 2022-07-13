@@ -12,10 +12,6 @@ namespace TTT
         public Board(GameManager gameManager)
         {
             this.gameManager = gameManager;
-        }
-
-        public void Initialize()
-        {
             Cells = new Cell[3,3];
             for(int i=0; i < Cells.GetLength(0); i++)
             {

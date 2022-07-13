@@ -14,16 +14,18 @@ namespace TTT
 
         public GameManager()
         {
-
+            Identities.Add(0, new Player(0));
+            Identities.Add(1, new Player(1));
+            Identities.Add(2, new Player(2));
         }
 
 
 
         public void Load(ContentManager content)
         {           
-            Identities.Add(0, new Player(0, content.Load<Texture2D>("e")));
-            Identities.Add(1, new Player(0, content.Load<Texture2D>("x")));
-            Identities.Add(2, new Player(0, content.Load<Texture2D>("o")));
+            Identities[0].Sign = content.Load<Texture2D>("e");
+            Identities[1].Sign = content.Load<Texture2D>("x");
+            Identities[2].Sign = content.Load<Texture2D>("o");
         }
 
 

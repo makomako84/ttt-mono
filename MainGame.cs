@@ -14,7 +14,7 @@ namespace TTT
         public Selector selector;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        
+
         private KeyboardState oldState;
 
         public MainGame()
@@ -43,7 +43,6 @@ namespace TTT
             // TODO: use this.Content to load your game content here
             
             gameManager.Load(Content);
-            board.Initialize();
             selector.Load(Content);
             
         }

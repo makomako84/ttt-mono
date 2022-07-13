@@ -4,10 +4,9 @@ namespace TTT
 {
     public class Player
     {
-        public Player(int id, Texture2D sign)
+        public Player(int identifier)
         {
-            Identifier = id;
-            Sign = sign;
+            Identifier = identifier;
         }
 
         /// <summary>
@@ -23,7 +22,7 @@ namespace TTT
         /// </summary>
         /// <value></value>
         public Texture2D Sign { get; set; }
-        
+
         public void MakeMove(Move move)
         {
             
