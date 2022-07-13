@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using TTT.Core;
+using TTT;
 
 namespace TTT
 {

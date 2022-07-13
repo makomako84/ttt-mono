@@ -1,4 +1,4 @@
-namespace TTT.Core
+namespace TTT
 {
     /// <summary>
     /// Состояние хода, которое Player передает системе

@@ -1,4 +1,4 @@
-namespace TTT.Core
+namespace TTT
 {
     public static class Configuration
     {

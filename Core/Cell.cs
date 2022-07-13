@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TTT.Core
+namespace TTT
 {
     public class Cell
     {

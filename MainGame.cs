@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using TTT.Core;
-
 namespace TTT
 {
     /// <summary>
@@ -12,11 +10,6 @@ namespace TTT
     public class MainGame : Microsoft.Xna.Framework.Game
     {
         public Board board;
-
-        private Texture2D _xTexture;
-        private Texture2D _oTexture;
-        private Texture2D _eTexture;
-
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private AnimatedSprite _animatedSprite;
