@@ -12,6 +12,8 @@ namespace TTT
 
         public Dictionary<int, Player> Identities = new Dictionary<int, Player>();
 
+        public bool IsGameFinished { get; private set; }
+
         public Player CurrentPlayer
         {
             get => Identities[_currentPlayerId];
@@ -53,13 +55,19 @@ namespace TTT
 
         public void Initialize()
         {
+            // добавили игроков
             Identities.Add(0, new Player(0));
             Identities.Add(1, new Player(1));
             Identities.Add(2, new Player(2));          
 
+            // установили указатель игрока на первого
             CurrentPlayerId = 1;  
         }   
 
+        public void UpdateGameFinishState()
+        {
+            
+        }
 
 
         private void OnPlayerIdChanged()

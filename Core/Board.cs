@@ -43,6 +43,19 @@ namespace TTT
             Cells[x, y].CapturedBy = player;
         }
 
+        public bool CheckWinningState()
+        {
+            for(int i=0; i < Cells.GetLength(0); i++)
+            {
+                for(int j = 0; j < Cells.GetLength(1); j++)
+                {
+                    // Cells[i,j]
+                    // TODO: algo here
+                }
+            }
+            return true;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
