@@ -103,6 +103,7 @@ namespace TTT
 
 
             board.Draw(_spriteBatch);
+            gameManager.DrawSelector(_spriteBatch);
 
             base.Draw(gameTime);
         }

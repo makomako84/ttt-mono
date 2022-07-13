@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace TTT
@@ -69,6 +71,18 @@ namespace TTT
             Identities.Add(0, new Player(0, Art.E));
             Identities.Add(1, new Player(1, Art.X));
             Identities.Add(2, new Player(2, Art.O));
+        }
+
+        public void DrawSelector(SpriteBatch batch)
+        {
+            Vector2 position = new Vector2(
+                SelectionX * Configuration.CellSize,
+                SelectionY * Configuration.CellSize
+            );
+
+            batch.Begin();
+            batch.Draw(Art.Select, position, Color.White);
+            batch.End();
         }
     }
 }
