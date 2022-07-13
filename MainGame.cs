@@ -1,14 +1,18 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TTT.Core;
 
 namespace TTT
 {
     /// <summary>
     /// Tic-tac-toe
     /// </summary>
-    public class TTT : Game
+    public class MainGame : Microsoft.Xna.Framework.Game
     {
+        public Board board;
+
         private Texture2D _xTexture;
         private Texture2D _oTexture;
         private Texture2D _eTexture;
@@ -26,7 +30,7 @@ namespace TTT
         private float angle;
         private KeyboardState oldState;
 
-        public TTT()
+        public MainGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -40,6 +44,7 @@ namespace TTT
             position = Vector3.Zero;
             angle = 0;
 
+            // Set Empty field to zero identifier
             base.Initialize();
         }
 
@@ -48,14 +53,14 @@ namespace TTT
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _xTexture = Content.Load<Texture2D>("x");
-            _eTexture = Content.Load<Texture2D>("e");
-            _oTexture = Content.Load<Texture2D>("o");
+            Art.Load(Content);
+            Identifiers.Setup();
 
             var texture = Content.Load<Texture2D>("SmileyWalk");
             _animatedSprite = new AnimatedSprite(texture, 4, 4);
 
             _model = Content.Load<Model>("box");
+            board = new Board();
             
         }
 
@@ -101,21 +106,23 @@ namespace TTT
 
             // batch - партия, серия
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
-            _spriteBatch.Draw(_xTexture, new Vector2(0, 0), Color.White);
-            _spriteBatch.End();
+            // _spriteBatch.Begin();
+            // _spriteBatch.Draw(_xTexture, new Vector2(0, 0), Color.White);
+            // _spriteBatch.End();
 
-            _spriteBatch.Begin();
-            _spriteBatch.Draw(_eTexture, new Vector2(100, 0), Color.White);
-            _spriteBatch.End();
+            // _spriteBatch.Begin();
+            // _spriteBatch.Draw(_eTexture, new Vector2(100, 0), Color.White);
+            // _spriteBatch.End();
 
-            _spriteBatch.Begin();
-            _spriteBatch.Draw(_oTexture, new Vector2(200, 0), Color.White);
-            _spriteBatch.End();
+            // _spriteBatch.Begin();
+            // _spriteBatch.Draw(_oTexture, new Vector2(200, 0), Color.White);
+            // _spriteBatch.End();
 
-            _animatedSprite.Draw(_spriteBatch, new Vector2(400, 200));
+            // _animatedSprite.Draw(_spriteBatch, new Vector2(400, 200));
+            // DrawModel(_model, world, view, projection);
 
-            DrawModel(_model, world, view, projection);
+
+            board.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }

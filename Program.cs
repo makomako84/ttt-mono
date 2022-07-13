@@ -7,7 +7,7 @@ namespace TTT
         [STAThread]
         static void Main()
         {
-            using (var game = new TTT())
+            using (var game = new MainGame())
                 game.Run();
         }
     }

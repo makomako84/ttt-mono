@@ -4,6 +4,12 @@ namespace TTT.Core
 {
     public class PlayerIdentifier
     {
+        public PlayerIdentifier(int identifier, Texture2D sign)
+        {
+            Identifier = identifier;
+            Sign = sign;
+        }
+
         /// <summary>
         /// Идентификатор игрока, допустим игрок 1, или игрок 2
         /// </summary>
