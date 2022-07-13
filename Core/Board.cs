@@ -9,6 +9,8 @@ namespace TTT
 
         private GameManager _gameManager;
         private Configuration _config;
+        
+        public Vector2 leftCornerPosition;
 
         public Board(
             GameManager gameManager,
@@ -20,6 +22,8 @@ namespace TTT
 
         public void Initialize()
         {
+            leftCornerPosition = _config.BoardLeftCornerPosition;
+            
             Cells = new Cell[3,3];
             for(int i=0; i < Cells.GetLength(0); i++)
             {
@@ -28,8 +32,8 @@ namespace TTT
                     Cells[i,j] = new Cell();
                     Cells[i,j].CapturedBy = _gameManager.Identities[0];
                     Cells[i,j].Position = new Vector2(
-                        _config.CellSize * i, 
-                        _config.CellSize * j);
+                        leftCornerPosition.X + _config.CellSize * i, 
+                        leftCornerPosition.Y + _config.CellSize * j);
                 }
             }
         }

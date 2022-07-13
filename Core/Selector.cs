@@ -7,23 +7,28 @@ namespace TTT
 {
     public class Selector
     {
-        private Configuration _configuration;
+        // dependencies
+        private Configuration _conf;
+        private Board _board;
 
         public int _selectionX;
         public int _selectionY;
         public Texture2D _texture;
         public Vector2 _position;
 
-        public Selector(Configuration configuration)
+        public Selector(
+            Configuration configuration,
+            Board board)
         {
-            _configuration = configuration;
+            _conf = configuration;
+            _board = board;
         }
 
         public void Initialize()
         {
             _selectionX = 0;
             _selectionY = 0;
-            _position = Vector2.Zero;
+            _position = _conf.BoardLeftCornerPosition;
         }
 
         public void Load(ContentManager content)
@@ -75,8 +80,8 @@ namespace TTT
             }
 
                 _position = new Vector2(
-                SelectionX * _configuration.CellSize,
-                SelectionY * _configuration.CellSize
+                    _board.leftCornerPosition.X + SelectionX * _conf.CellSize,
+                    _board.leftCornerPosition.Y + SelectionY * _conf.CellSize
             );
         }
 

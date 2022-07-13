@@ -27,12 +27,13 @@ namespace TTT
 
             config = new Configuration
             (
-                cellSize: 100
+                cellSize: 100,
+                boardLeftCornerPosition: new Vector2(100, 100)
             );
 
             gameManager = new GameManager();
             board =  new Board(gameManager, config);
-            selector = new Selector(config);
+            selector = new Selector(config, board);
         }
 
         protected override void Initialize()
