@@ -13,7 +13,7 @@ namespace TTT
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            var texture = CapturedBy.PlayerIdentifier.Sign;
+            var texture = CapturedBy.Sign;
             spriteBatch.Draw(texture, position, Color.White);
         }
     }

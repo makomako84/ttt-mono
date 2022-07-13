@@ -14,7 +14,6 @@ namespace TTT
         public Selector selector;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private AnimatedSprite _animatedSprite;
         private Model _model;
 
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
@@ -36,6 +35,10 @@ namespace TTT
         {
             // TODO: Add your initialization logic here
 
+            gameManager = new GameManager();
+            board =  new Board(gameManager);
+            selector = new Selector();
+
             position = Vector3.Zero;
             angle = 0;
 
@@ -48,17 +51,9 @@ namespace TTT
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            Art.Load(Content);
-            GameManager.Setup();
-
-            var texture = Content.Load<Texture2D>("SmileyWalk");
-            _animatedSprite = new AnimatedSprite(texture, 4, 4);
-
-            _model = Content.Load<Model>("box");
-            gameManager = new GameManager();
-            board =  new Board();
-
-            selector = new Selector();
+            
+            gameManager.Load(Content);
+            board.Initialize();
             selector.Load(Content);
             
         }
@@ -69,7 +64,6 @@ namespace TTT
                 Exit();
 
             // TODO: Add your update logic here
-            _animatedSprite.Update();
             position += new Vector3(0, 0.01f, 0);
             angle += 0.03f;
             world = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
@@ -101,9 +95,6 @@ namespace TTT
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-            // _animatedSprite.Draw(_spriteBatch, new Vector2(400, 200));
-            // DrawModel(_model, world, view, projection);
 
 
             board.Draw(_spriteBatch);            

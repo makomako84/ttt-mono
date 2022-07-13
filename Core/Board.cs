@@ -7,7 +7,14 @@ namespace TTT
     {
         public Cell[,] Cells;
 
-        public Board()
+        public GameManager gameManager;
+
+        public Board(GameManager gameManager)
+        {
+            this.gameManager = gameManager;
+        }
+
+        public void Initialize()
         {
             Cells = new Cell[3,3];
             for(int i=0; i < Cells.GetLength(0); i++)
@@ -15,7 +22,7 @@ namespace TTT
                 for(int j = 0; j < Cells.GetLength(1); j++)
                 {
                     Cells[i,j] = new Cell();
-                    Cells[i,j].CapturedBy = GameManager.Identities[0];
+                    Cells[i,j].CapturedBy = this.gameManager.Identities[0];
                 }
             }
         }
