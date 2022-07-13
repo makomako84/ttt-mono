@@ -68,26 +68,18 @@ namespace TTT
 
             KeyboardState newState = Keyboard.GetState();
 
-
+            // simulate NextPlayer logic
             if(oldState.IsKeyUp(Keys.N) && newState.IsKeyDown(Keys.N))
             {
-                gameManager.NextPlayerId();
-                //board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.Identities[1]);
+                gameManager.NextPlayerId();                
             }
 
+            // simulate applymove
             if(oldState.IsKeyUp(Keys.Enter) && newState.IsKeyDown(Keys.Enter))
             {
                 board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
             }
-
-            if(oldState.IsKeyUp(Keys.A) && newState.IsKeyDown(Keys.A))
-            {
-                board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.Identities[1]);
-            }
-            else if(oldState.IsKeyUp(Keys.S) && newState.IsKeyDown(Keys.S))
-            {
-                board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.Identities[2]);
-            }
+            
 
             selector.Update(newState, oldState);
 

@@ -12,6 +12,12 @@ namespace TTT
 
         public Dictionary<int, Player> Identities = new Dictionary<int, Player>();
 
+        public Player CurrentPlayer
+        {
+            get => Identities[_currentPlayerId];
+        }
+
+
         public int CurrentPlayerId
         {
             get => _currentPlayerId;
@@ -25,9 +31,18 @@ namespace TTT
             }
         }
 
-        public Player CurrentPlayer
+        public void NextPlayerId()     
         {
-            get => Identities[_currentPlayerId];
+            int next = _currentPlayerId + 1;
+            if(next >= Identities.Count)
+            {
+                next = 1;
+                CurrentPlayerId = next;
+            }
+            else
+            {
+                CurrentPlayerId++;
+            }
         }
 
 
@@ -45,19 +60,7 @@ namespace TTT
             CurrentPlayerId = 1;  
         }   
 
-        public void NextPlayerId()     
-        {
-            int next = _currentPlayerId + 1;
-            if(next >= Identities.Count)
-            {
-                next = 1;
-                CurrentPlayerId = next;
-            }
-            else
-            {
-                CurrentPlayerId++;
-            }
-        }
+
 
         private void OnPlayerIdChanged()
         {
