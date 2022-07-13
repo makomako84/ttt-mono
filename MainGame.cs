@@ -14,14 +14,7 @@ namespace TTT
         public Selector selector;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Model _model;
-
-        private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
-        private Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 10), new Vector3(0, 0, 0), Vector3.UnitY);
-        private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 100f);
-
-        private Vector3 position;
-        private float angle;
+        
         private KeyboardState oldState;
 
         public MainGame()
@@ -38,9 +31,6 @@ namespace TTT
             gameManager = new GameManager();
             board =  new Board(gameManager);
             selector = new Selector();
-
-            position = Vector3.Zero;
-            angle = 0;
 
             // Set Empty field to zero identifier
             base.Initialize();
@@ -64,30 +54,12 @@ namespace TTT
                 Exit();
 
             // TODO: Add your update logic here
-            position += new Vector3(0, 0.01f, 0);
-            angle += 0.03f;
-            world = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
 
             KeyboardState newState = Keyboard.GetState();
             selector.Update(newState, oldState);
             oldState = newState;
 
             base.Update(gameTime);
-        }
-
-        private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.World = world;
-                    effect.View = view;
-                    effect.Projection = projection;
-                }
-        
-                mesh.Draw();
-            }
         }
 
         protected override void Draw(GameTime gameTime)
