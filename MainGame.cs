@@ -9,6 +9,7 @@ namespace TTT
     /// </summary>
     public class MainGame : Microsoft.Xna.Framework.Game
     {
+        public GameManager gameManager;
         public Board board;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -47,13 +48,14 @@ namespace TTT
 
             // TODO: use this.Content to load your game content here
             Art.Load(Content);
-            Identifiers.Setup();
+            GameManager.Setup();
 
             var texture = Content.Load<Texture2D>("SmileyWalk");
             _animatedSprite = new AnimatedSprite(texture, 4, 4);
 
             _model = Content.Load<Model>("box");
-            board = new Board();
+            gameManager = new GameManager();
+            board =  new Board();
             
         }
 
@@ -97,19 +99,7 @@ namespace TTT
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // batch - партия, серия
             // TODO: Add your drawing code here
-            // _spriteBatch.Begin();
-            // _spriteBatch.Draw(_xTexture, new Vector2(0, 0), Color.White);
-            // _spriteBatch.End();
-
-            // _spriteBatch.Begin();
-            // _spriteBatch.Draw(_eTexture, new Vector2(100, 0), Color.White);
-            // _spriteBatch.End();
-
-            // _spriteBatch.Begin();
-            // _spriteBatch.Draw(_oTexture, new Vector2(200, 0), Color.White);
-            // _spriteBatch.End();
 
             // _animatedSprite.Draw(_spriteBatch, new Vector2(400, 200));
             // DrawModel(_model, world, view, projection);

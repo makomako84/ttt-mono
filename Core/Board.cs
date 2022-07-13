@@ -15,7 +15,7 @@ namespace TTT
                 for(int j = 0; j < Cells.GetLength(1); j++)
                 {
                     Cells[i,j] = new Cell();
-                    Cells[i,j].CapturedBy = Identifiers.Identities[0];
+                    Cells[i,j].CapturedBy = GameManager.Identities[0];
                 }
             }
         }
