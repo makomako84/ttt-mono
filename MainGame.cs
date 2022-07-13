@@ -71,10 +71,7 @@ namespace TTT
             world = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
 
             KeyboardState newState = Keyboard.GetState();
-            if(oldState.IsKeyUp(Keys.Left) && newState.IsKeyDown(Keys.Left))
-            {
-                System.Diagnostics.Debug.WriteLine("FIRE!");
-            }
+            gameManager.UpdateSelection(newState, oldState);
             oldState = newState;
 
             base.Update(gameTime);
