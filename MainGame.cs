@@ -12,6 +12,8 @@ namespace TTT
         public GameManager gameManager;
         public Board board;
         public Selector selector;
+        public Configuration config;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -22,15 +24,24 @@ namespace TTT
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            config = new Configuration
+            (
+                cellSize: 100
+            );
+
+            gameManager = new GameManager();
+            board =  new Board(gameManager, config);
+            selector = new Selector(config);
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            gameManager = new GameManager();
-            board =  new Board(gameManager);
-            selector = new Selector();
+            
+            gameManager.Initialize();
+            board.Initialize();
+            selector.Initialize();
 
             // Set Empty field to zero identifier
             base.Initialize();

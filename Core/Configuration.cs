@@ -1,7 +1,13 @@
 namespace TTT
 {
-    public static class Configuration
+    public class Configuration
     {
-        public static float CellSize => 100;
+        public readonly float CellSize;
+
+        public Configuration(
+            float cellSize)
+        {
+            CellSize = cellSize;
+        }
     }
 }

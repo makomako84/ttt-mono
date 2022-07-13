@@ -7,18 +7,29 @@ namespace TTT
     {
         public Cell[,] Cells;
 
-        public GameManager gameManager;
+        private GameManager _gameManager;
+        private Configuration _config;
 
-        public Board(GameManager gameManager)
+        public Board(
+            GameManager gameManager,
+            Configuration config)
         {
-            this.gameManager = gameManager;
+            _gameManager = gameManager;
+            _config = config;
+        }
+
+        public void Initialize()
+        {
             Cells = new Cell[3,3];
             for(int i=0; i < Cells.GetLength(0); i++)
             {
                 for(int j = 0; j < Cells.GetLength(1); j++)
                 {
                     Cells[i,j] = new Cell();
-                    Cells[i,j].CapturedBy = this.gameManager.Identities[0];
+                    Cells[i,j].CapturedBy = _gameManager.Identities[0];
+                    Cells[i,j].Position = new Vector2(
+                        _config.CellSize * i, 
+                        _config.CellSize * j);
                 }
             }
         }
@@ -30,10 +41,7 @@ namespace TTT
             {
                 for(int j=0; j < Cells.GetLength(1); j++)
                 {
-                    float cellSize = Configuration.CellSize;
-
-                    Vector2 cellPosition = new Vector2(cellSize * i, cellSize * j);
-                    Cells[i, j].Draw(spriteBatch, cellPosition);
+                    Cells[i, j].Draw(spriteBatch);
                 }
             }
             spriteBatch.End();

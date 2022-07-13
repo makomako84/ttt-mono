@@ -7,12 +7,19 @@ namespace TTT
 {
     public class Selector
     {
+        private Configuration _configuration;
+
         public int _selectionX;
         public int _selectionY;
         public Texture2D _texture;
         public Vector2 _position;
 
-        public Selector()
+        public Selector(Configuration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public void Initialize()
         {
             _selectionX = 0;
             _selectionY = 0;
@@ -68,8 +75,8 @@ namespace TTT
             }
 
                 _position = new Vector2(
-                SelectionX * Configuration.CellSize,
-                SelectionY * Configuration.CellSize
+                SelectionX * _configuration.CellSize,
+                SelectionY * _configuration.CellSize
             );
         }
 

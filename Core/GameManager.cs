@@ -14,9 +14,14 @@ namespace TTT
 
         public GameManager()
         {
+            
+        }
+
+        public void Initialize()
+        {
             Identities.Add(0, new Player(0));
             Identities.Add(1, new Player(1));
-            Identities.Add(2, new Player(2));
+            Identities.Add(2, new Player(2));            
         }
 
 
