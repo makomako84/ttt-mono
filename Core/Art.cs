@@ -16,7 +16,6 @@ namespace TTT
             X = content.Load<Texture2D>("x");
             O = content.Load<Texture2D>("o");
             E = content.Load<Texture2D>("e");
-			Select = content.Load<Texture2D>("select");
 		}
 	}
 }

@@ -11,6 +11,7 @@ namespace TTT
     {
         public GameManager gameManager;
         public Board board;
+        public Selector selector;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private AnimatedSprite _animatedSprite;
@@ -56,6 +57,9 @@ namespace TTT
             _model = Content.Load<Model>("box");
             gameManager = new GameManager();
             board =  new Board();
+
+            selector = new Selector();
+            selector.Load(Content);
             
         }
 
@@ -71,7 +75,7 @@ namespace TTT
             world = Matrix.CreateRotationY(angle) * Matrix.CreateTranslation(position);
 
             KeyboardState newState = Keyboard.GetState();
-            gameManager.UpdateSelection(newState, oldState);
+            selector.Update(newState, oldState);
             oldState = newState;
 
             base.Update(gameTime);
@@ -102,8 +106,8 @@ namespace TTT
             // DrawModel(_model, world, view, projection);
 
 
-            board.Draw(_spriteBatch);
-            gameManager.DrawSelector(_spriteBatch);
+            board.Draw(_spriteBatch);            
+            selector.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }
