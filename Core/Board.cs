@@ -3,10 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TTT
 {
-    public class Board : IBoard
+    public class Board : IGameComponent, IBoard
     {
-        // dependencies
-        private readonly GameServiceContainer _services;
+        private Game game;
         private IGameManager _gameManager;
         private IConfiguration _config;
 
@@ -21,21 +20,16 @@ namespace TTT
 
         private Vector2 _leftCornerPosition;
 
-        public Board(
-            GameServiceContainer services)
+        public Board(Game game)
         {
-            _services = services;
-
-        }
-
-        public void DI()
-        {
-            _gameManager = (IGameManager)_services.GetService(typeof(IGameManager)); 
-            _config = (IConfiguration)_services.GetService(typeof(IConfiguration));
+            this.game = game;
         }
 
         public void Initialize()
         {
+            _gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager)); 
+            _config = (IConfiguration)game.Services.GetService(typeof(IConfiguration));
+
             _leftCornerPosition = _config.BoardLeftCornerPosition;
 
             _cells = new Cell[3,3];

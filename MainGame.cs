@@ -11,7 +11,7 @@ namespace TTT
     public class MainGame : Microsoft.Xna.Framework.Game
     {
         public GameManager gameManager;
-        public Board board;
+        public Board _board;
         public Selector selector;
         public Configuration config;
 
@@ -32,15 +32,18 @@ namespace TTT
                 boardLeftCornerPosition: new Vector2(100, 100)
             );
             gameManager = new GameManager(Services);
-            board =  new Board(Services);
+            _board =  new Board(this);
             selector = new Selector(Services);
 
-            Services.AddService<IGameManager>(gameManager);
+            
+
             Services.AddService<IConfiguration>(config);
-            Services.AddService<IBoard>(board);
+            Services.AddService<IGameManager>(gameManager);
+            Services.AddService<IBoard>(_board);
+
+            Components.Add(_board);
 
             gameManager.DI();
-            board.DI();
             selector.Di();
         }
 
@@ -49,7 +52,7 @@ namespace TTT
             // TODO: Add your initialization logic here
             
             gameManager.Initialize();
-            board.Initialize();
+            //(Services.GetService<IBoard>() as IGameComponent).Initialize();
             selector.Initialize();
 
             // Set Empty field to zero identifier
@@ -83,10 +86,10 @@ namespace TTT
             }
 
             // simulate applymove
-            if(oldState.IsKeyUp(Keys.Enter) && newState.IsKeyDown(Keys.Enter))
-            {
-                board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
-            }
+            // if(oldState.IsKeyUp(Keys.Enter) && newState.IsKeyDown(Keys.Enter))
+            // {
+            //     board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
+            // }
             
 
             selector.Update(newState, oldState);
@@ -102,8 +105,8 @@ namespace TTT
 
             // TODO: Add your drawing code here
 
-
-            board.Draw(_spriteBatch);            
+            //(Services.GetService<IBoard>() as IDrawable).Draw()
+            _board.Draw(_spriteBatch);            
             selector.Draw(_spriteBatch);
 
             base.Draw(gameTime);
