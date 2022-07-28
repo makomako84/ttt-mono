@@ -6,8 +6,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class GameManager
+    public class GameManager : IGameManager
     {
+        // di
+        private readonly GameServiceContainer _services;
+
         private int _currentPlayerId;
 
         public Dictionary<int, Player> Identities = new Dictionary<int, Player>();
@@ -17,6 +20,12 @@ namespace TTT
         public Player CurrentPlayer
         {
             get => Identities[_currentPlayerId];
+        }
+
+        // interface methods
+        public Dictionary<int, Player> GetIdentities()
+        {
+            return Identities;
         }
 
 
@@ -48,7 +57,12 @@ namespace TTT
         }
 
 
-        public GameManager()
+        public GameManager(GameServiceContainer services)
+        {
+            _services = services;
+        }
+
+        public void DI()
         {
             
         }

@@ -8,8 +8,9 @@ namespace TTT
     public class Selector
     {
         // dependencies
-        private Configuration _conf;
-        private Board _board;
+        private GameServiceContainer _services;
+        private IConfiguration _conf;
+        private IBoard _board;
 
         public int _selectionX;
         public int _selectionY;
@@ -19,11 +20,15 @@ namespace TTT
         public Cell Selection { get; private set; }
 
         public Selector(
-            Configuration configuration,
-            Board board)
+            GameServiceContainer services)
         {
-            _conf = configuration;
-            _board = board;
+            _services = services;
+        }
+
+        public void Di()
+        {
+            _conf = _services.GetService<IConfiguration>();
+            _board = _services.GetService<IBoard>();
         }
 
         public void Initialize()
@@ -69,8 +74,8 @@ namespace TTT
             Selection = _board.Cells[SelectionX, SelectionY];
 
             _position = new Vector2(
-                _board.leftCornerPosition.X + SelectionX * _conf.CellSize,
-                _board.leftCornerPosition.Y + SelectionY * _conf.CellSize
+                _board.LeftCornerPosition.X + SelectionX * _conf.CellSize,
+                _board.LeftCornerPosition.Y + SelectionY * _conf.CellSize
             );
 
             // System.Diagnostics.Debug.WriteLine($"OnSelectionChanged > Selection position: {Selection.Position}");

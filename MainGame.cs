@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 namespace TTT
 {
     /// <summary>
@@ -30,10 +31,17 @@ namespace TTT
                 cellSize: 100,
                 boardLeftCornerPosition: new Vector2(100, 100)
             );
+            gameManager = new GameManager(Services);
+            board =  new Board(Services);
+            selector = new Selector(Services);
 
-            gameManager = new GameManager();
-            board =  new Board(gameManager, config);
-            selector = new Selector(config, board);
+            Services.AddService<IGameManager>(gameManager);
+            Services.AddService<IConfiguration>(config);
+            Services.AddService<IBoard>(board);
+
+            gameManager.DI();
+            board.DI();
+            selector.Di();
         }
 
         protected override void Initialize()
