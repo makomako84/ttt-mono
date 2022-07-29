@@ -1,10 +1,11 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TTT
 {
-    public class Board : IGameComponent, IBoard, IDrawable
+    public class Board : IGameComponent, IBoard, IDrawable, ILoadable
     {
         private Game game;
         private IGameManager _gameManager;
@@ -56,11 +57,6 @@ namespace TTT
             }
         }
 
-        public void InitBatch(SpriteBatch batch)
-        {
-            _spriteBatch = batch;
-        }
-
         public void ApplyMove(int x, int y, Player player)
         {
             _cells[x, y].CapturedBy = player;
@@ -90,6 +86,11 @@ namespace TTT
                 }
             }
             _spriteBatch.End();
+        }
+
+        public void Load(ContentManager content, SpriteBatch spriteBatch)
+        {
+            _spriteBatch = spriteBatch;
         }
     }
 }

@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class Selector : IDrawable, IGameComponent
+    public class Selector : IDrawable, IGameComponent, ILoadable
     {
         // dependencies
-        private GameServiceContainer _services;
+        private Game _game;
         private IConfiguration _conf;
         private IBoard _board;
 
@@ -25,28 +25,24 @@ namespace TTT
 
         public Cell Selection { get; private set; }
 
-        public Selector(
-            GameServiceContainer services)
+        public Selector(Game game)
         {
-            _services = services;
-        }
-
-        public void Di()
-        {
-            _conf = _services.GetService<IConfiguration>();
-            _board = _services.GetService<IBoard>();
+            _game = game;
         }
 
         public void Initialize()
         {
+            _conf = _game.Services.GetService<IConfiguration>();
+            _board = _game.Services.GetService<IBoard>();
+
             _selectionX = 0;
             _selectionY = 0;
             _position = _conf.BoardLeftCornerPosition;
         }
 
-        public void Load(ContentManager content, SpriteBatch batch)
+        public void Load(ContentManager content, SpriteBatch spriteBatch)
         {
-            this._batch = batch;
+            this._batch = spriteBatch;
             _texture = content.Load<Texture2D>("select");
         }
 

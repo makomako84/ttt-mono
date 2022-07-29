@@ -31,9 +31,9 @@ namespace TTT
                 cellSize: 100,
                 boardLeftCornerPosition: new Vector2(100, 100)
             );
-            gameManager = new GameManager(Services);
+            gameManager = new GameManager(this);
             _board =  new Board(this);
-            selector = new Selector(Services);
+            selector = new Selector(this);
 
             
             
@@ -41,20 +41,14 @@ namespace TTT
             Services.AddService<IGameManager>(gameManager);
             Services.AddService<IBoard>(_board);
 
+            Components.Add(gameManager);
             Components.Add(_board);
             Components.Add(selector);
-
-            gameManager.DI();
-            selector.Di();
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
-            gameManager.Initialize();
-            //(Services.GetService<IBoard>() as IGameComponent).Initialize();
-            selector.Initialize();
 
             // Set Empty field to zero identifier
             base.Initialize();
@@ -63,12 +57,12 @@ namespace TTT
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _board.InitBatch(_spriteBatch);
+            
             // TODO: use this.Content to load your game content here
-            
-            gameManager.Load(Content);
+
+            _board.Load(Content, _spriteBatch);
+            gameManager.Load(Content, _spriteBatch);
             selector.Load(Content, _spriteBatch);
-            
         }
 
         protected override void Update(GameTime gameTime)
@@ -105,11 +99,6 @@ namespace TTT
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-            //(Services.GetService<IBoard>() as IDrawable).Draw()
-            //_board.Draw(_spriteBatch);            
-            //selector.Draw(_spriteBatch);
-
             base.Draw(gameTime);
         }
     }

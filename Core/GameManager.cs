@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class GameManager : IGameManager
+    public class GameManager : IGameManager, IGameComponent, ILoadable
     {
         // di
-        private readonly GameServiceContainer _services;
+        private readonly Game _game;
 
         private int _currentPlayerId;
 
@@ -57,14 +57,9 @@ namespace TTT
         }
 
 
-        public GameManager(GameServiceContainer services)
+        public GameManager(Game game)
         {
-            _services = services;
-        }
-
-        public void DI()
-        {
-            
+            _game = game;
         }
 
         public void Initialize()
@@ -89,15 +84,11 @@ namespace TTT
             System.Diagnostics.Debug.WriteLine($"OnPlayerIdChanged > id: {_currentPlayerId}");
         }
 
-
-
-        public void Load(ContentManager content)
-        {           
+        public void Load(ContentManager content, SpriteBatch spriteBatch)
+        {
             Identities[0].Sign = content.Load<Texture2D>("e");
             Identities[1].Sign = content.Load<Texture2D>("x");
             Identities[2].Sign = content.Load<Texture2D>("o");
         }
-
-
     }
 }
