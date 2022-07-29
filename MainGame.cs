@@ -11,10 +11,7 @@ namespace TTT
     public class MainGame : Microsoft.Xna.Framework.Game
     {
         private List<ILoadable> _loadList = new List<ILoadable>();
-
-        //public GameManager gameManager;
-        //public Board _board;
-        //public Selector selector;
+        
         public Configuration config;
 
         private GraphicsDeviceManager _graphics;
@@ -33,11 +30,10 @@ namespace TTT
                 cellSize: 100,
                 boardLeftCornerPosition: new Vector2(100, 100)
             );
+            
             var gameManager = new GameManager(this);
             var board =  new Board(this);
             var selector = new Selector(this);
-
-            
             
             Services.AddService<IConfiguration>(config);
             Services.AddService<IGameManager>(gameManager);
@@ -66,15 +62,10 @@ namespace TTT
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             
             // TODO: use this.Content to load your game content here
-
-            //_board.Load(Content, _spriteBatch);
             foreach(var item in _loadList)
             {
                 item.Load(Content, _spriteBatch);
             }
-
-            //gameManager.Load(Content, _spriteBatch);
-            //selector.Load(Content, _spriteBatch);
         }
 
         protected override void Update(GameTime gameTime)
