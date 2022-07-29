@@ -17,7 +17,11 @@ namespace TTT
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private KeyboardState oldState;
+        private KeyboardState _oldState;
+        private KeyboardState _newState;
+
+        public KeyboardState OldState => _oldState;
+        public KeyboardState NewState => _newState;
 
         public MainGame()
         {
@@ -75,17 +79,17 @@ namespace TTT
 
             // TODO: Add your update logic here
 
-            KeyboardState newState = Keyboard.GetState();
+            _newState = Keyboard.GetState();
 
             // simulate NextPlayer logic
-            if(oldState.IsKeyUp(Keys.N) && newState.IsKeyDown(Keys.N))
+            if(_oldState.IsKeyUp(Keys.N) && _newState.IsKeyDown(Keys.N))
             {
                 Services.GetService<IGameManager>().NextPlayerId();                
             }
 
             var selector = Services.GetService<ISelector>();
             //simulate applymove
-            if(oldState.IsKeyUp(Keys.Enter) && newState.IsKeyDown(Keys.Enter))
+            if(_oldState.IsKeyUp(Keys.Enter) && _newState.IsKeyDown(Keys.Enter))
             {
                 var gameManager = Services.GetService<IGameManager>();
                 
@@ -93,8 +97,11 @@ namespace TTT
             }
             
 
-            selector.Update(newState, oldState);
-            oldState = newState;
+            selector.Update(_newState, _oldState);
+
+            // TASK: разобраться с инпутами (command pattern или InputHandler)
+
+            _oldState = _newState;
 
             base.Update(gameTime);
         }

@@ -12,7 +12,6 @@ namespace TTT
         private Game _game;
         private IConfiguration _conf;
         private IBoard _board;
-
         private SpriteBatch _batch;
 
         public int _selectionX;
