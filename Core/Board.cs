@@ -1,13 +1,15 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TTT
 {
-    public class Board : IGameComponent, IBoard
+    public class Board : IGameComponent, IBoard, IDrawable
     {
         private Game game;
         private IGameManager _gameManager;
         private IConfiguration _config;
+        private SpriteBatch _spriteBatch;
 
 
         private Cell[,] _cells;
@@ -16,13 +18,21 @@ namespace TTT
 
 
         
-        public Vector2 LeftCornerPosition { get => _leftCornerPosition; } 
+        public Vector2 LeftCornerPosition { get => _leftCornerPosition; }
+
+        public int DrawOrder => 0;
+
+        public bool Visible => true;
 
         private Vector2 _leftCornerPosition;
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
 
         public Board(Game game)
         {
             this.game = game;
+            
         }
 
         public void Initialize()
@@ -46,6 +56,11 @@ namespace TTT
             }
         }
 
+        public void InitBatch(SpriteBatch batch)
+        {
+            _spriteBatch = batch;
+        }
+
         public void ApplyMove(int x, int y, Player player)
         {
             _cells[x, y].CapturedBy = player;
@@ -64,17 +79,17 @@ namespace TTT
             return true;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
+            _spriteBatch.Begin();
             for(int i=0; i < _cells.GetLength(0); i++)
             {
                 for(int j=0; j < _cells.GetLength(1); j++)
                 {
-                    _cells[i, j].Draw(spriteBatch);
+                    _cells[i, j].Draw(_spriteBatch);
                 }
             }
-            spriteBatch.End();
+            _spriteBatch.End();
         }
     }
 }

@@ -36,12 +36,13 @@ namespace TTT
             selector = new Selector(Services);
 
             
-
+            
             Services.AddService<IConfiguration>(config);
             Services.AddService<IGameManager>(gameManager);
             Services.AddService<IBoard>(_board);
 
             Components.Add(_board);
+            Components.Add(selector);
 
             gameManager.DI();
             selector.Di();
@@ -62,11 +63,11 @@ namespace TTT
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            _board.InitBatch(_spriteBatch);
             // TODO: use this.Content to load your game content here
             
             gameManager.Load(Content);
-            selector.Load(Content);
+            selector.Load(Content, _spriteBatch);
             
         }
 
@@ -85,11 +86,11 @@ namespace TTT
                 gameManager.NextPlayerId();                
             }
 
-            // simulate applymove
-            // if(oldState.IsKeyUp(Keys.Enter) && newState.IsKeyDown(Keys.Enter))
-            // {
-            //     board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
-            // }
+            //simulate applymove
+            if(oldState.IsKeyUp(Keys.Enter) && newState.IsKeyDown(Keys.Enter))
+            {
+                _board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
+            }
             
 
             selector.Update(newState, oldState);
@@ -106,8 +107,8 @@ namespace TTT
             // TODO: Add your drawing code here
 
             //(Services.GetService<IBoard>() as IDrawable).Draw()
-            _board.Draw(_spriteBatch);            
-            selector.Draw(_spriteBatch);
+            //_board.Draw(_spriteBatch);            
+            //selector.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }

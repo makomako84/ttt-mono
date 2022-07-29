@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -5,17 +6,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class Selector
+    public class Selector : IDrawable, IGameComponent
     {
         // dependencies
         private GameServiceContainer _services;
         private IConfiguration _conf;
         private IBoard _board;
 
+        private SpriteBatch _batch;
+
         public int _selectionX;
         public int _selectionY;
         public Texture2D _texture;
         public Vector2 _position;
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
 
         public Cell Selection { get; private set; }
 
@@ -38,8 +44,9 @@ namespace TTT
             _position = _conf.BoardLeftCornerPosition;
         }
 
-        public void Load(ContentManager content)
+        public void Load(ContentManager content, SpriteBatch batch)
         {
+            this._batch = batch;
             _texture = content.Load<Texture2D>("select");
         }
 
@@ -68,6 +75,10 @@ namespace TTT
                 }
             }
         }
+
+        public int DrawOrder => 10;
+
+        public bool Visible => true;
 
         private void OnSelectionChanged()
         {
@@ -101,11 +112,11 @@ namespace TTT
             }
         }
 
-        public void Draw(SpriteBatch batch)
+        public void Draw(GameTime gameTime)
         {
-            batch.Begin();
-            batch.Draw(_texture, _position, Color.White);
-            batch.End();
+            _batch.Begin();
+            _batch.Draw(_texture, _position, Color.White);
+            _batch.End();
         }
     }
 }
