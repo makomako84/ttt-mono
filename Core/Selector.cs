@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class Selector : IDrawable, IGameComponent, ILoadable
+    public class Selector : IDrawable, IGameComponent, ILoadable, ISelector
     {
         // dependencies
         private Game _game;

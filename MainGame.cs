@@ -10,9 +10,11 @@ namespace TTT
     /// </summary>
     public class MainGame : Microsoft.Xna.Framework.Game
     {
-        public GameManager gameManager;
-        public Board _board;
-        public Selector selector;
+        private List<ILoadable> _loadList = new List<ILoadable>();
+
+        //public GameManager gameManager;
+        //public Board _board;
+        //public Selector selector;
         public Configuration config;
 
         private GraphicsDeviceManager _graphics;
@@ -31,19 +33,24 @@ namespace TTT
                 cellSize: 100,
                 boardLeftCornerPosition: new Vector2(100, 100)
             );
-            gameManager = new GameManager(this);
-            _board =  new Board(this);
-            selector = new Selector(this);
+            var gameManager = new GameManager(this);
+            var board =  new Board(this);
+            var selector = new Selector(this);
 
             
             
             Services.AddService<IConfiguration>(config);
             Services.AddService<IGameManager>(gameManager);
-            Services.AddService<IBoard>(_board);
+            Services.AddService<IBoard>(board);
+            Services.AddService<ISelector>(selector);
 
             Components.Add(gameManager);
-            Components.Add(_board);
+            Components.Add(board);
             Components.Add(selector);
+
+            _loadList.Add(board);
+            _loadList.Add(gameManager);
+            _loadList.Add(selector);
         }
 
         protected override void Initialize()
@@ -60,9 +67,14 @@ namespace TTT
             
             // TODO: use this.Content to load your game content here
 
-            _board.Load(Content, _spriteBatch);
-            gameManager.Load(Content, _spriteBatch);
-            selector.Load(Content, _spriteBatch);
+            //_board.Load(Content, _spriteBatch);
+            foreach(var item in _loadList)
+            {
+                item.Load(Content, _spriteBatch);
+            }
+
+            //gameManager.Load(Content, _spriteBatch);
+            //selector.Load(Content, _spriteBatch);
         }
 
         protected override void Update(GameTime gameTime)
@@ -77,18 +89,20 @@ namespace TTT
             // simulate NextPlayer logic
             if(oldState.IsKeyUp(Keys.N) && newState.IsKeyDown(Keys.N))
             {
-                gameManager.NextPlayerId();                
+                Services.GetService<IGameManager>().NextPlayerId();                
             }
 
+            var selector = Services.GetService<ISelector>();
             //simulate applymove
             if(oldState.IsKeyUp(Keys.Enter) && newState.IsKeyDown(Keys.Enter))
             {
-                _board.ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
+                var gameManager = Services.GetService<IGameManager>();
+                
+                Services.GetService<IBoard>().ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
             }
             
 
             selector.Update(newState, oldState);
-
             oldState = newState;
 
             base.Update(gameTime);

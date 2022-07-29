@@ -6,5 +6,7 @@ namespace TTT
     {
         Vector2 LeftCornerPosition { get; }
         Cell[,] Cells { get; }
+
+        void ApplyMove(int x, int y, Player player);
     }
 }
