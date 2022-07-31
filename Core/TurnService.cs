@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class GameManager : IGameManager
+    public class TurnService : ITurnService
     {
         // *** dependencies ***
         private readonly Game _game;
@@ -14,7 +14,7 @@ namespace TTT
         public bool IsGameFinished { get; private set; }
 
 #region .ctor
-        public GameManager(Game game)
+        public TurnService(Game game)
         {
             _game = game;
         }
