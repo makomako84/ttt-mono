@@ -8,48 +8,63 @@ namespace TTT
 {
     public class Selector : IDrawable, IGameComponent, ILoadable, ISelector, IUpdateable
     {
-        // dependencies
+        // *** dependencies ***
         private MainGame _game;
         private IConfiguration _conf;
         private IInputHandle _inputHandle;
-
         private IBoard _board;
         private SpriteBatch _batch;
 
+        // *** data ***
         public int _selectionX;
         public int _selectionY;
+
+        /// <summary>
+        /// Текстура - графическое представление селектора
+        /// </summary>
         public Texture2D _texture;
+
+        /// <summary>
+        /// Положение селектора в пространстве
+        /// </summary>
         public Vector2 _position;
 
-        public event EventHandler<EventArgs> DrawOrderChanged;
-        public event EventHandler<EventArgs> VisibleChanged;
-        public event EventHandler<EventArgs> EnabledChanged;
-        public event EventHandler<EventArgs> UpdateOrderChanged;
-
-        public Cell Selection { get; private set; }
-
-        public Selector(Game game)
+        /// <summary>
+        /// Обновлять координаты и положение селектора, когда производится единичное нажатие
+        /// </summary>
+        private void UpdateSelection()
         {
-            _game = game as MainGame;
+            if(_inputHandle.LeftKeyPressed)
+            {
+                SelectionX--;
+            }
+            else if(_inputHandle.RightKeyPressed)
+            {
+                SelectionX++;
+            }
+            else if(_inputHandle.UpKeyPressed)
+            {
+                SelectionY--;
+            }
+            else if(_inputHandle.DownKeyPressed)
+            {
+                SelectionY++;
+            }
         }
 
-        public void Initialize()
+        /// <summary>
+        /// Обновлять положение селектора в пространстве, когда
+        /// изменяются координаты селектора на доске
+        /// </summary>
+        private void OnSelectionChanged()
         {
-            _conf = _game.Services.GetService<IConfiguration>();
-            _board = _game.Services.GetService<IBoard>();
-            _inputHandle = _game.Services.GetService<IInputHandle>();
-
-            _selectionX = 0;
-            _selectionY = 0;
-            _position = _conf.BoardLeftCornerPosition;
+            _position = new Vector2(
+                _board.LeftCornerPosition.X + SelectionX * _conf.CellSize,
+                _board.LeftCornerPosition.Y + SelectionY * _conf.CellSize
+            );
         }
 
-        public void Load(ContentManager content, SpriteBatch spriteBatch)
-        {
-            this._batch = spriteBatch;
-            _texture = content.Load<Texture2D>("select");
-        }
-
+#region ISelector
         public int SelectionX
         {
             get => _selectionX;
@@ -76,56 +91,63 @@ namespace TTT
             }
         }
 
+
+#endregion
+
+#region .ctor
+        public Selector(Game game)
+        {
+            _game = game as MainGame;
+        }
+#endregion
+
+#region IGameComponent
+        public void Initialize()
+        {
+            _conf = _game.Services.GetService<IConfiguration>();
+            _board = _game.Services.GetService<IBoard>();
+            _inputHandle = _game.Services.GetService<IInputHandle>();
+
+            _selectionX = 0;
+            _selectionY = 0;
+            _position = _conf.BoardLeftCornerPosition;
+        }
+#endregion
+
+#region ILoadable
+        public void Load(ContentManager content, SpriteBatch spriteBatch)
+        {
+            this._batch = spriteBatch;
+            _texture = content.Load<Texture2D>("select");
+        }
+#endregion
+
+#region IDrawable
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
         public int DrawOrder => 10;
 
         public bool Visible => true;
-
-        public bool Enabled => true;
-
-        public int UpdateOrder => 0;
-
-        private void OnSelectionChanged()
-        {
-            Selection = _board.Cells[SelectionX, SelectionY];
-
-            _position = new Vector2(
-                _board.LeftCornerPosition.X + SelectionX * _conf.CellSize,
-                _board.LeftCornerPosition.Y + SelectionY * _conf.CellSize
-            );
-
-            // System.Diagnostics.Debug.WriteLine($"OnSelectionChanged > Selection position: {Selection.Position}");
-        }
-
-        public void Update(KeyboardState newState, KeyboardState oldState)
-        {
-
-        }
-
         public void Draw(GameTime gameTime)
         {
             _batch.Begin();
             _batch.Draw(_texture, _position, Color.White);
             _batch.End();
         }
+#endregion
 
+#region IUpdateable
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
+        public bool Enabled => true;
+
+        public int UpdateOrder => 0;
         public void Update(GameTime gameTime)
         {
-            if(_inputHandle.LeftKeyPressed)
-            {
-                SelectionX--;
-            }
-            else if(_inputHandle.RightKeyPressed)
-            {
-                SelectionX++;
-            }
-            else if(_inputHandle.UpKeyPressed)
-            {
-                SelectionY--;
-            }
-            else if(_inputHandle.DownKeyPressed)
-            {
-                SelectionY++;
-            }
+            UpdateSelection();
         }
+#endregion
+
     }
+
 }
