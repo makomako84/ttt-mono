@@ -13,6 +13,7 @@ namespace TTT
         // *** data ***
         private int _currentPlayerId;
         private Dictionary<int, Player> _identities = new Dictionary<int, Player>();
+        private bool _lastPlayer;
 
         private int CurrentPlayerId
         {
@@ -33,11 +34,15 @@ namespace TTT
             get => _identities[_currentPlayerId];
         }
 
+        public bool LastPlayer => _lastPlayer;
+
         public void NextPlayer()     
         {
+            _lastPlayer = false;
             int next = _currentPlayerId + 1;
             if(next >= _identities.Count)
             {
+                _lastPlayer = true;
                 next = 1;
                 CurrentPlayerId = next;
             }

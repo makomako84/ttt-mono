@@ -32,6 +32,7 @@ namespace TTT
             var playerService = new PlayerService(this);
             var board =  new Board(this);
             var selector = new Selector(this);
+            var turnService = new TurnService(this);
 
             var inputHandler = new InputHandler();
             _inputSet = inputHandler as IInputSet;
@@ -41,12 +42,14 @@ namespace TTT
             Services.AddService<IBoard>(board);
             Services.AddService<ISelector>(selector);
             Services.AddService<IInputHandle>(inputHandler);
+            Services.AddService<ITurnService>(turnService);
 
             _inputHandler = Services.GetService<IInputHandle>();
 
             Components.Add(playerService);
             Components.Add(board);
             Components.Add(selector);
+            Components.Add(turnService);
             
             _loadList.Add(board);
             _loadList.Add(playerService);
@@ -78,23 +81,7 @@ namespace TTT
                 Exit();
 
             // TODO: Add your update logic here
-            _inputSet.SetKeyboardCurrentState(Keyboard.GetState());
-
-            // simulate NextPlayer logic
-            if(_inputHandler.NKeyPressed)
-                Services.GetService<IPlayerService>().NextPlayer();                
-
-            var selector = Services.GetService<ISelector>();
-            //simulate applymove
-            if(_inputHandler.EnterKeyPressed)
-            {
-                var playerService = Services.GetService<IPlayerService>();
-                Services.GetService<IBoard>().ChangeCellState(
-                    selector.SelectionX, selector.SelectionY, 
-                    playerService.CurrentPlayer);
-            }
-            // base update должен быть помещен перед обновлением oldState
-            // видимо компоненты IUpdatable обновляются вместе с base.Update класса Game
+            _inputSet.SetKeyboardCurrentState(Keyboard.GetState());         
             base.Update(gameTime);
             _inputSet.UpdateKeyboardPreviousState();
         }

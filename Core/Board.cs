@@ -17,6 +17,7 @@ namespace TTT
         private int _fieldSize = 3;
         private Cell[,] _cells;
         private Vector2 _leftCornerPosition;
+        private bool _isFinishState;
 
  
 
@@ -57,9 +58,15 @@ namespace TTT
         {
             _cells[x, y].CapturedBy = player;
             DebugBoardState();
-            bool winningState = CheckWinningState(x, y, player.Identifier);
-            System.Diagnostics.Debug.WriteLine($"Player {player.Identifier}, wins? : {winningState}");
+            _isFinishState = CheckWinningState(x, y, player.Identifier);
+            System.Diagnostics.Debug.WriteLine($"Player {player.Identifier}, wins? : {_isFinishState}");
         }
+
+        public bool CanChangeState(int x, int y)
+            => _cells[x, y].CapturedBy.Identifier == 0;
+
+        public bool IsFinishState()
+            => _isFinishState;
 
         /// <summary>
         /// https://stackoverflow.com/questions/1056316/algorithm-for-determining-tic-tac-toe-game-over
@@ -155,6 +162,6 @@ namespace TTT
         {
             _spriteBatch = spriteBatch;
         }
-#endregion
+        #endregion
     }
 }

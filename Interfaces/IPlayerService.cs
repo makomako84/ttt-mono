@@ -17,6 +17,8 @@ namespace TTT
         /// <summary>
         /// Получить игрока по индексу
         /// </summary>
-        public Player GetPlayer(int index);
+        Player GetPlayer(int index);
+
+        bool LastPlayer { get; }
     }
 }

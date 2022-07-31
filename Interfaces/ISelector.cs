@@ -7,5 +7,9 @@ namespace TTT
         int SelectionX { get; set; } 
 
         int SelectionY { get; set;}
+
+        bool SelectionConfirmed { get; }
+
+        void ResetConfirm();
     }
 }

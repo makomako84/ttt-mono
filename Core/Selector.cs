@@ -13,16 +13,14 @@ namespace TTT
         private IConfiguration _conf;
         private IInputHandle _inputHandle;
         private IBoard _board;
+        private ITurnService _turnService;
         private SpriteBatch _batch;
 
         // *** data ***
-        public int _selectionX;
-        public int _selectionY;
-
-        /// <summary>
-        /// Текстура - графическое представление селектора
-        /// </summary>
-        public Texture2D _texture;
+        private int _selectionX;
+        private int _selectionY;
+        private bool _selectionConfirmed;
+        private Texture2D _texture;
 
         /// <summary>
         /// Положение селектора в пространстве
@@ -34,6 +32,8 @@ namespace TTT
         /// </summary>
         private void UpdateSelection()
         {
+            if(_turnService.GameFinished) return;
+
             if(_inputHandle.LeftKeyPressed)
             {
                 SelectionX--;
@@ -49,6 +49,15 @@ namespace TTT
             else if(_inputHandle.DownKeyPressed)
             {
                 SelectionY++;
+            }
+            else if(_inputHandle.EnterKeyPressed)
+            {
+                if(_board.CanChangeState(SelectionX, SelectionY))
+                {
+                    _selectionConfirmed = true;
+                    System.Diagnostics.Debug.WriteLine("Выбор подтвержден");
+                }
+                    
             }
         }
 
@@ -91,6 +100,10 @@ namespace TTT
             }
         }
 
+        public bool SelectionConfirmed => _selectionConfirmed;
+        public void ResetConfirm()
+            => _selectionConfirmed = false;
+
 
 #endregion
 
@@ -107,6 +120,7 @@ namespace TTT
             _conf = _game.Services.GetService<IConfiguration>();
             _board = _game.Services.GetService<IBoard>();
             _inputHandle = _game.Services.GetService<IInputHandle>();
+            _turnService = _game.Services.GetService<ITurnService>();
 
             _selectionX = 0;
             _selectionY = 0;
@@ -142,11 +156,12 @@ namespace TTT
         public bool Enabled => true;
 
         public int UpdateOrder => 0;
+
         public void Update(GameTime gameTime)
         {
             UpdateSelection();
         }
-#endregion
+        #endregion
 
     }
 
