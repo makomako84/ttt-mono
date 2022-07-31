@@ -63,7 +63,7 @@ namespace TTT
 #region IBoard
         public Cell[,] Cells => _cells;
         public Vector2 LeftCornerPosition { get => _leftCornerPosition; }
-        public void ApplyMove(int x, int y, Player player)
+        public void ChangeCellState(int x, int y, Player player)
         {
             _cells[x, y].CapturedBy = player;
         }

@@ -11,9 +11,7 @@ namespace TTT
     public class MainGame : Microsoft.Xna.Framework.Game
     {
         private List<ILoadable> _loadList = new List<ILoadable>();
-        
-        public Configuration config;
-
+        public Configuration _config;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private readonly IInputSet _inputSet;
@@ -25,7 +23,7 @@ namespace TTT
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            config = new Configuration
+            _config = new Configuration
             (
                 cellSize: 100,
                 boardLeftCornerPosition: new Vector2(100, 100)
@@ -38,7 +36,7 @@ namespace TTT
             var inputHandler = new InputHandler();
             _inputSet = inputHandler as IInputSet;
             
-            Services.AddService<IConfiguration>(config);
+            Services.AddService<IConfiguration>(_config);
             Services.AddService<IPlayerService>(playerService);
             Services.AddService<IBoard>(board);
             Services.AddService<ISelector>(selector);
@@ -91,7 +89,9 @@ namespace TTT
             if(_inputHandler.EnterKeyPressed)
             {
                 var playerService = Services.GetService<IPlayerService>();
-                Services.GetService<IBoard>().ApplyMove(selector.SelectionX, selector.SelectionY, playerService.CurrentPlayer);
+                Services.GetService<IBoard>().ChangeCellState(
+                    selector.SelectionX, selector.SelectionY, 
+                    playerService.CurrentPlayer);
             }
             // base update должен быть помещен перед обновлением oldState
             // видимо компоненты IUpdatable обновляются вместе с base.Update класса Game
