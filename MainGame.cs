@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
+
 namespace TTT
 {
     /// <summary>
@@ -16,12 +16,8 @@ namespace TTT
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-        private KeyboardState _oldState;
-        private KeyboardState _newState;
-
-        public KeyboardState OldState => _oldState;
-        public KeyboardState NewState => _newState;
+        private readonly IInputSet _inputSet;
+        private readonly IInputHandle _inputHandler;
 
         public MainGame()
         {
@@ -38,16 +34,22 @@ namespace TTT
             var gameManager = new GameManager(this);
             var board =  new Board(this);
             var selector = new Selector(this);
+
+            var inputHandler = new InputHandler();
+            _inputSet = inputHandler as IInputSet;
             
             Services.AddService<IConfiguration>(config);
             Services.AddService<IGameManager>(gameManager);
             Services.AddService<IBoard>(board);
             Services.AddService<ISelector>(selector);
+            Services.AddService<IInputHandle>(inputHandler);
+
+            _inputHandler = Services.GetService<IInputHandle>();
 
             Components.Add(gameManager);
             Components.Add(board);
             Components.Add(selector);
-
+            
             _loadList.Add(board);
             _loadList.Add(gameManager);
             _loadList.Add(selector);
@@ -78,32 +80,23 @@ namespace TTT
                 Exit();
 
             // TODO: Add your update logic here
-
-            _newState = Keyboard.GetState();
+            _inputSet.SetKeyboardCurrentState(Keyboard.GetState());
 
             // simulate NextPlayer logic
-            if(_oldState.IsKeyUp(Keys.N) && _newState.IsKeyDown(Keys.N))
-            {
+            if(_inputHandler.IsNKeyPressed())
                 Services.GetService<IGameManager>().NextPlayerId();                
-            }
 
             var selector = Services.GetService<ISelector>();
             //simulate applymove
-            if(_oldState.IsKeyUp(Keys.Enter) && _newState.IsKeyDown(Keys.Enter))
+            if(_inputHandler.IsEnterKeyPressed())
             {
                 var gameManager = Services.GetService<IGameManager>();
-                
                 Services.GetService<IBoard>().ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
             }
-            
-
-            selector.Update(_newState, _oldState);
-
-            // TASK: разобраться с инпутами (command pattern или InputHandler)
-
-            _oldState = _newState;
-
+            // base update должен быть помещен перед обновлением oldState
+            // видимо компоненты IUpdatable обновляются вместе с base.Update класса Game
             base.Update(gameTime);
+            _inputSet.UpdateKeyboardPreviousState();
         }
 
         protected override void Draw(GameTime gameTime)

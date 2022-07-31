@@ -6,11 +6,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TTT
 {
-    public class Selector : IDrawable, IGameComponent, ILoadable, ISelector
+    public class Selector : IDrawable, IGameComponent, ILoadable, ISelector, IUpdateable
     {
         // dependencies
-        private Game _game;
+        private MainGame _game;
         private IConfiguration _conf;
+        private IInputHandle _inputHandle;
+
         private IBoard _board;
         private SpriteBatch _batch;
 
@@ -21,18 +23,21 @@ namespace TTT
 
         public event EventHandler<EventArgs> DrawOrderChanged;
         public event EventHandler<EventArgs> VisibleChanged;
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
 
         public Cell Selection { get; private set; }
 
         public Selector(Game game)
         {
-            _game = game;
+            _game = game as MainGame;
         }
 
         public void Initialize()
         {
             _conf = _game.Services.GetService<IConfiguration>();
             _board = _game.Services.GetService<IBoard>();
+            _inputHandle = _game.Services.GetService<IInputHandle>();
 
             _selectionX = 0;
             _selectionY = 0;
@@ -75,6 +80,10 @@ namespace TTT
 
         public bool Visible => true;
 
+        public bool Enabled => true;
+
+        public int UpdateOrder => 0;
+
         private void OnSelectionChanged()
         {
             Selection = _board.Cells[SelectionX, SelectionY];
@@ -89,22 +98,7 @@ namespace TTT
 
         public void Update(KeyboardState newState, KeyboardState oldState)
         {
-            if(oldState.IsKeyUp(Keys.Left) && newState.IsKeyDown(Keys.Left))
-            {
-                SelectionX--;
-            }
-            else if(oldState.IsKeyUp(Keys.Right) && newState.IsKeyDown(Keys.Right))
-            {
-                SelectionX++;
-            }
-            else if(oldState.IsKeyUp(Keys.Up) && newState.IsKeyDown(Keys.Up))
-            {
-                SelectionY--;
-            }
-            else if(oldState.IsKeyUp(Keys.Down) && newState.IsKeyDown(Keys.Down))
-            {
-                SelectionY++;
-            }
+
         }
 
         public void Draw(GameTime gameTime)
@@ -112,6 +106,26 @@ namespace TTT
             _batch.Begin();
             _batch.Draw(_texture, _position, Color.White);
             _batch.End();
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            if(_inputHandle.IsLeftKeyPressed())
+            {
+                SelectionX--;
+            }
+            else if(_inputHandle.IsRightKeyPressed())
+            {
+                SelectionX++;
+            }
+            else if(_inputHandle.IsUpKeyPresed())
+            {
+                SelectionY--;
+            }
+            else if(_inputHandle.IsDownKeyPressed())
+            {
+                SelectionY++;
+            }
         }
     }
 }
