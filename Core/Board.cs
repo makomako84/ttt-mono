@@ -14,21 +14,11 @@ namespace TTT
         private SpriteBatch _spriteBatch;
 
         // *** data ***
+        private int _fieldSize = 3;
         private Cell[,] _cells;
         private Vector2 _leftCornerPosition;
 
-        public bool CheckWinningState()
-        {
-            for(int i=0; i < _cells.GetLength(0); i++)
-            {
-                for(int j = 0; j < _cells.GetLength(1); j++)
-                {
-                    // Cells[i,j]
-                    // TODO: algo here
-                }
-            }
-            return true;
-        }
+ 
 
 #region .ctor
         public Board(Game game)
@@ -45,16 +35,16 @@ namespace TTT
 
             _leftCornerPosition = _config.BoardLeftCornerPosition;
 
-            _cells = new Cell[3,3];
-            for(int i=0; i < _cells.GetLength(0); i++)
+            _cells = new Cell[_fieldSize, _fieldSize];
+            for(int x = 0; x < _cells.GetLength(0); x++)
             {
-                for(int j = 0; j < _cells.GetLength(1); j++)
+                for(int y = 0; y < _cells.GetLength(1); y++)
                 {
-                    _cells[i,j] = new Cell();
-                    _cells[i,j].CapturedBy = _playerService.GetPlayer(0);
-                    _cells[i,j].Position = new Vector2(
-                        _leftCornerPosition.X + _config.CellSize * i, 
-                        _leftCornerPosition.Y + _config.CellSize * j);
+                    _cells[x,y] = new Cell();
+                    _cells[x,y].CapturedBy = _playerService.GetPlayer(0);
+                    _cells[x,y].Position = new Vector2(
+                        _leftCornerPosition.X + _config.CellSize * x, 
+                        _leftCornerPosition.Y + _config.CellSize * y);
                 }
             }
         }
@@ -66,6 +56,69 @@ namespace TTT
         public void ChangeCellState(int x, int y, Player player)
         {
             _cells[x, y].CapturedBy = player;
+            DebugBoardState();
+            bool winningState = CheckWinningState(x, y, player.Identifier);
+            System.Diagnostics.Debug.WriteLine($"Player {player.Identifier}, wins? : {winningState}");
+        }
+
+        /// <summary>
+        /// https://stackoverflow.com/questions/1056316/algorithm-for-determining-tic-tac-toe-game-over
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckWinningState(int x, int y, int cellState)
+        {   
+            
+            bool product = true;
+            for(int iy = 0; iy < _fieldSize; iy++)
+            {
+                product &= _cells[x, iy].CapturedBy.Identifier == cellState;
+            }
+            System.Diagnostics.Debug.WriteLine($"Vertical check: {product}, column: {x}");
+            if(product) return true;
+            
+            product = true;
+            for(int ix = 0; ix < _fieldSize; ix++)
+            {
+                product &= _cells[ix, y].CapturedBy.Identifier == cellState;
+            }
+            System.Diagnostics.Debug.WriteLine($"Horizontal check: {product}, row: {y}");
+            if(product) return true;
+
+            
+            if(x == y)
+            {
+                product = true;
+                for(int i = 0; i < _fieldSize; i++)
+                {
+                    product &= _cells[i,i].CapturedBy.Identifier == cellState;
+                }
+                System.Diagnostics.Debug.WriteLine($"Diagonal left to right check: {product}");
+                if(product) return true;
+            }
+            if(x + y == _fieldSize - 1)
+            {
+                product = true;
+                for(int i = 0; i < _fieldSize; i++)
+                {
+                    product &= _cells[i, (_fieldSize - 1) - i].CapturedBy.Identifier == cellState;
+                }
+                System.Diagnostics.Debug.WriteLine($"Diagonal right to left check: {product}");
+                if(product) return true;
+            }
+            return false;
+        }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void DebugBoardState()
+        {
+            for(int col = 0; col < _fieldSize; col++)
+            {
+                for(int row = 0; row < _fieldSize; row++)
+                {
+                    System.Diagnostics.Debug.Write(_cells[row, col].CapturedBy.Identifier);
+                }
+                System.Diagnostics.Debug.WriteLine("");
+            }
         }
 #endregion
 
