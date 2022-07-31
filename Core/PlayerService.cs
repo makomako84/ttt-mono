@@ -14,19 +14,7 @@ namespace TTT
         private int _currentPlayerId;
         private Dictionary<int, Player> _identities = new Dictionary<int, Player>();
 
-        public Player CurrentPlayer
-        {
-            get => _identities[_currentPlayerId];
-        }
-
-        // interface methods
-        public Dictionary<int, Player> GetIdentities()
-        {
-            return _identities;
-        }
-
-
-        public int CurrentPlayerId
+        private int CurrentPlayerId
         {
             get => _currentPlayerId;
             set
@@ -39,7 +27,13 @@ namespace TTT
             }
         }
 
-        public void NextPlayerId()     
+#region IPlayerService
+        public Player CurrentPlayer
+        {
+            get => _identities[_currentPlayerId];
+        }
+
+        public void NextPlayer()     
         {
             int next = _currentPlayerId + 1;
             if(next >= _identities.Count)
@@ -52,6 +46,12 @@ namespace TTT
                 CurrentPlayerId++;
             }
         }
+
+        public Player GetPlayer(int index)
+        {
+            return _identities[index];
+        }
+#endregion
 
 #region .ctor
         public PlayerService(Game game)
@@ -80,7 +80,7 @@ namespace TTT
             _identities[1].Sign = content.Load<Texture2D>("x");
             _identities[2].Sign = content.Load<Texture2D>("o");
         }
-#endregion
+        #endregion
 
     }
 }

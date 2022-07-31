@@ -4,8 +4,19 @@ namespace TTT
 {
     public interface IPlayerService
     {
-        Dictionary<int, Player> GetIdentities();
-        void NextPlayerId();
+        /// <summary>
+        /// Установить следующего игрока
+        /// </summary>
+        void NextPlayer();
+
+        /// <summary>
+        /// Получить текущего игрока
+        /// </summary>
         Player CurrentPlayer { get; }
+
+        /// <summary>
+        /// Получить игрока по индексу
+        /// </summary>
+        public Player GetPlayer(int index);
     }
 }

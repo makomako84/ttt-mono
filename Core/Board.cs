@@ -51,7 +51,7 @@ namespace TTT
                 for(int j = 0; j < _cells.GetLength(1); j++)
                 {
                     _cells[i,j] = new Cell();
-                    _cells[i,j].CapturedBy = _playerService.GetIdentities()[0];
+                    _cells[i,j].CapturedBy = _playerService.GetPlayer(0);
                     _cells[i,j].Position = new Vector2(
                         _leftCornerPosition.X + _config.CellSize * i, 
                         _leftCornerPosition.Y + _config.CellSize * j);

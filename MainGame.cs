@@ -82,7 +82,7 @@ namespace TTT
 
             // simulate NextPlayer logic
             if(_inputHandler.NKeyPressed)
-                Services.GetService<IPlayerService>().NextPlayerId();                
+                Services.GetService<IPlayerService>().NextPlayer();                
 
             var selector = Services.GetService<ISelector>();
             //simulate applymove
