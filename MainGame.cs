@@ -31,7 +31,7 @@ namespace TTT
                 boardLeftCornerPosition: new Vector2(100, 100)
             );
             
-            var gameManager = new GameManager(this);
+            var playerService = new PlayerService(this);
             var board =  new Board(this);
             var selector = new Selector(this);
 
@@ -39,19 +39,19 @@ namespace TTT
             _inputSet = inputHandler as IInputSet;
             
             Services.AddService<IConfiguration>(config);
-            Services.AddService<IGameManager>(gameManager);
+            Services.AddService<IPlayerService>(playerService);
             Services.AddService<IBoard>(board);
             Services.AddService<ISelector>(selector);
             Services.AddService<IInputHandle>(inputHandler);
 
             _inputHandler = Services.GetService<IInputHandle>();
 
-            Components.Add(gameManager);
+            Components.Add(playerService);
             Components.Add(board);
             Components.Add(selector);
             
             _loadList.Add(board);
-            _loadList.Add(gameManager);
+            _loadList.Add(playerService);
             _loadList.Add(selector);
         }
 
@@ -84,14 +84,14 @@ namespace TTT
 
             // simulate NextPlayer logic
             if(_inputHandler.NKeyPressed)
-                Services.GetService<IGameManager>().NextPlayerId();                
+                Services.GetService<IPlayerService>().NextPlayerId();                
 
             var selector = Services.GetService<ISelector>();
             //simulate applymove
             if(_inputHandler.EnterKeyPressed)
             {
-                var gameManager = Services.GetService<IGameManager>();
-                Services.GetService<IBoard>().ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);
+                var playerService = Services.GetService<IPlayerService>();
+                Services.GetService<IBoard>().ApplyMove(selector.SelectionX, selector.SelectionY, playerService.CurrentPlayer);
             }
             // base update должен быть помещен перед обновлением oldState
             // видимо компоненты IUpdatable обновляются вместе с base.Update класса Game

@@ -9,7 +9,7 @@ namespace TTT
     {
         // *** dependencies ***
         private MainGame _game;
-        private IGameManager _gameManager;
+        private IPlayerService _playerService;
         private IConfiguration _config;
         private SpriteBatch _spriteBatch;
 
@@ -40,7 +40,7 @@ namespace TTT
 #region IGameComponent
         public void Initialize()
         {
-            _gameManager = (IGameManager)_game.Services.GetService(typeof(IGameManager)); 
+            _playerService = (IPlayerService)_game.Services.GetService(typeof(IPlayerService)); 
             _config = (IConfiguration)_game.Services.GetService(typeof(IConfiguration));
 
             _leftCornerPosition = _config.BoardLeftCornerPosition;
@@ -51,7 +51,7 @@ namespace TTT
                 for(int j = 0; j < _cells.GetLength(1); j++)
                 {
                     _cells[i,j] = new Cell();
-                    _cells[i,j].CapturedBy = _gameManager.GetIdentities()[0];
+                    _cells[i,j].CapturedBy = _playerService.GetIdentities()[0];
                     _cells[i,j].Position = new Vector2(
                         _leftCornerPosition.X + _config.CellSize * i, 
                         _leftCornerPosition.Y + _config.CellSize * j);
