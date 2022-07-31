@@ -2,12 +2,12 @@ namespace TTT
 {
     public interface IInputHandle
     {
-        bool IsUpKeyPresed();
-        bool IsDownKeyPressed();
-        bool IsLeftKeyPressed();
-        bool IsRightKeyPressed();
-        bool IsEnterKeyPressed();
-        bool IsNKeyPressed();
+        bool UpKeyPressed { get; }
+        bool DownKeyPressed { get; }
+        bool LeftKeyPressed { get; }
+        bool RightKeyPressed { get; }
+        bool EnterKeyPressed { get; }
+        bool NKeyPressed { get; }
 
     }
 }

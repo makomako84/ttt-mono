@@ -83,12 +83,12 @@ namespace TTT
             _inputSet.SetKeyboardCurrentState(Keyboard.GetState());
 
             // simulate NextPlayer logic
-            if(_inputHandler.IsNKeyPressed())
+            if(_inputHandler.NKeyPressed)
                 Services.GetService<IGameManager>().NextPlayerId();                
 
             var selector = Services.GetService<ISelector>();
             //simulate applymove
-            if(_inputHandler.IsEnterKeyPressed())
+            if(_inputHandler.EnterKeyPressed)
             {
                 var gameManager = Services.GetService<IGameManager>();
                 Services.GetService<IBoard>().ApplyMove(selector.SelectionX, selector.SelectionY, gameManager.CurrentPlayer);

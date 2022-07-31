@@ -110,19 +110,19 @@ namespace TTT
 
         public void Update(GameTime gameTime)
         {
-            if(_inputHandle.IsLeftKeyPressed())
+            if(_inputHandle.LeftKeyPressed)
             {
                 SelectionX--;
             }
-            else if(_inputHandle.IsRightKeyPressed())
+            else if(_inputHandle.RightKeyPressed)
             {
                 SelectionX++;
             }
-            else if(_inputHandle.IsUpKeyPresed())
+            else if(_inputHandle.UpKeyPressed)
             {
                 SelectionY--;
             }
-            else if(_inputHandle.IsDownKeyPressed())
+            else if(_inputHandle.DownKeyPressed)
             {
                 SelectionY++;
             }
