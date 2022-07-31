@@ -7,39 +7,41 @@ namespace TTT
 {
     public class Board : IGameComponent, IBoard, IDrawable, ILoadable
     {
-        private Game game;
+        // *** dependencies ***
+        private MainGame _game;
         private IGameManager _gameManager;
         private IConfiguration _config;
         private SpriteBatch _spriteBatch;
 
-
+        // *** data ***
         private Cell[,] _cells;
-
-        public Cell[,] Cells { get => _cells; }
-
-
-        
-        public Vector2 LeftCornerPosition { get => _leftCornerPosition; }
-
-        public int DrawOrder => 0;
-
-        public bool Visible => true;
-
         private Vector2 _leftCornerPosition;
 
-        public event EventHandler<EventArgs> DrawOrderChanged;
-        public event EventHandler<EventArgs> VisibleChanged;
-
-        public Board(Game game)
+        public bool CheckWinningState()
         {
-            this.game = game;
-            
+            for(int i=0; i < _cells.GetLength(0); i++)
+            {
+                for(int j = 0; j < _cells.GetLength(1); j++)
+                {
+                    // Cells[i,j]
+                    // TODO: algo here
+                }
+            }
+            return true;
         }
 
+#region .ctor
+        public Board(Game game)
+        {
+            _game = game as MainGame;
+        }
+#endregion
+
+#region IGameComponent
         public void Initialize()
         {
-            _gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager)); 
-            _config = (IConfiguration)game.Services.GetService(typeof(IConfiguration));
+            _gameManager = (IGameManager)_game.Services.GetService(typeof(IGameManager)); 
+            _config = (IConfiguration)_game.Services.GetService(typeof(IConfiguration));
 
             _leftCornerPosition = _config.BoardLeftCornerPosition;
 
@@ -56,25 +58,23 @@ namespace TTT
                 }
             }
         }
+#endregion
 
+#region IBoard
+        public Cell[,] Cells => _cells;
+        public Vector2 LeftCornerPosition { get => _leftCornerPosition; }
         public void ApplyMove(int x, int y, Player player)
         {
             _cells[x, y].CapturedBy = player;
         }
+#endregion
 
-        public bool CheckWinningState()
-        {
-            for(int i=0; i < _cells.GetLength(0); i++)
-            {
-                for(int j = 0; j < _cells.GetLength(1); j++)
-                {
-                    // Cells[i,j]
-                    // TODO: algo here
-                }
-            }
-            return true;
-        }
+#region IDrawable
+        public int DrawOrder => 0;
 
+        public bool Visible => true;
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
         public void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
@@ -87,10 +87,13 @@ namespace TTT
             }
             _spriteBatch.End();
         }
+#endregion
 
+#region ILoadable
         public void Load(ContentManager content, SpriteBatch spriteBatch)
         {
             _spriteBatch = spriteBatch;
         }
+#endregion
     }
 }
