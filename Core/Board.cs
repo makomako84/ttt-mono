@@ -73,7 +73,9 @@ namespace TTT
             {
                 product &= _cells[x, iy].CapturedBy.Identifier == cellState;
             }
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Vertical check: {product}, column: {x}");
+#endif
             if(product) return true;
             
             product = true;
@@ -81,7 +83,9 @@ namespace TTT
             {
                 product &= _cells[ix, y].CapturedBy.Identifier == cellState;
             }
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Horizontal check: {product}, row: {y}");
+#endif
             if(product) return true;
 
             
@@ -92,7 +96,9 @@ namespace TTT
                 {
                     product &= _cells[i,i].CapturedBy.Identifier == cellState;
                 }
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Diagonal left to right check: {product}");
+#endif
                 if(product) return true;
             }
             if(x + y == _fieldSize - 1)
@@ -102,7 +108,9 @@ namespace TTT
                 {
                     product &= _cells[i, (_fieldSize - 1) - i].CapturedBy.Identifier == cellState;
                 }
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Diagonal right to left check: {product}");
+#endif
                 if(product) return true;
             }
             return false;
