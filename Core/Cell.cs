@@ -11,10 +11,11 @@ namespace TTT
         /// </summary>
         public Player CapturedBy { get; set; }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public Vector2 Position { get; set; }
+
+        public void Draw(SpriteBatch spriteBatch)
         {
-            var texture = CapturedBy.PlayerIdentifier.Sign;
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(CapturedBy.Sign, Position, Color.White);
         }
     }
 }
